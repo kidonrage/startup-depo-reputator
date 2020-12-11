@@ -1,8 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, useEffect, useState } from 'react'
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -13,92 +12,7 @@ import {
 import { Chip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { invertColor } from '../../helpers/invertColor'
-
-const fetchedData = {
-  tagsData: {
-    stations: {
-      label: 'Вокзалы',
-      color: '#8884d8',
-    },
-    cars: {
-      label: 'Вагоны',
-      color: '#82ca9d',
-    },
-    restaraunts: {
-      label: 'Вагоны-рестораны',
-      color: '#ffc658',
-    },
-    conductors: {
-      label: 'Проводники',
-      color: '#ccbb40',
-    },
-  },
-  reviewsData: [
-    {
-      date: '07.05.1999',
-      stations: 100,
-      cars: 150,
-      restaraunts: 112,
-      conductors: 87,
-    },
-    {
-      date: '08.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 100,
-    },
-    {
-      date: '09.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 65,
-    },
-    {
-      date: '10.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 80,
-    },
-    {
-      date: '11.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 75,
-    },
-    {
-      date: '12.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 75,
-    },
-    {
-      date: '13.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 75,
-    },
-    {
-      date: '14.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 75,
-    },
-    {
-      date: '15.05.1999',
-      stations: 120,
-      cars: 135,
-      restaraunts: 118,
-      conductors: 75,
-    },
-  ],
-}
+import axios from '../../axios'
 
 const useStyles = makeStyles((theme) => ({
   chipsContainer: {
@@ -114,19 +28,40 @@ const useStyles = makeStyles((theme) => ({
 const ReviewChart = () => {
   const classes = useStyles()
 
+  const [tagsData, setTagsData] = useState({})
+  const [reviewsData, setReviewsData] = useState([])
+
+  useEffect(() => {
+    async function fetchTagsData() {
+      const { data } = await axios.get('/tagsData')
+      setTagsData(data)
+    }
+
+    fetchTagsData()
+  }, [])
+
+  useEffect(() => {
+    async function fetchReviewsData() {
+      const { data } = await axios.get('/reviewsData')
+      setReviewsData(data)
+    }
+
+    fetchReviewsData()
+  }, [tagsData])
+
   const handleClick = () => {
     console.log('handleClick')
   }
 
-  const handleDelete = () => {
-    console.log('handleDelete')
-  }
+  const handleDelete = () => {}
 
   return (
     <div>
       <div className={classes.chipsContainer}>
-        {Object.keys(fetchedData.tagsData).map((tagDataId) => {
-          const tagData = fetchedData.tagsData[tagDataId]
+        {Object.keys(tagsData).map((tagDataId) => {
+          console.log(tagsData, tagDataId)
+
+          const tagData = tagsData[tagDataId]
 
           return (
             <Chip
@@ -145,7 +80,7 @@ const ReviewChart = () => {
 
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
-          data={fetchedData.reviewsData}
+          data={reviewsData}
           margin={{
             top: 20,
             right: 30,
@@ -158,8 +93,8 @@ const ReviewChart = () => {
           <YAxis />
           <Tooltip />
           <Legend />
-          {Object.keys(fetchedData.tagsData).map((tagDataId) => {
-            const tagData = fetchedData.tagsData[tagDataId]
+          {Object.keys(tagsData).map((tagDataId) => {
+            const tagData = tagsData[tagDataId]
 
             console.log('tagData', tagData)
 
@@ -168,7 +103,7 @@ const ReviewChart = () => {
                 dataKey={tagDataId}
                 name={tagData.label}
                 fill={tagData.color}
-                stackId="a"
+                stackId="default"
               />
             )
           })}

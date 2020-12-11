@@ -1,5 +1,6 @@
 import React from 'react'
-import clsx from 'clsx'
+import { AxiosProvider } from 'react-axios'
+import axios from 'axios'
 import {
   createMuiTheme,
   makeStyles,
@@ -57,6 +58,7 @@ function App() {
   const classes = useStyles()
 
   return (
+    // <AxiosProvider instance={axiosInstance}>
     <Router>
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
@@ -89,6 +91,7 @@ function App() {
         </div>
       </ThemeProvider>
     </Router>
+    // </AxiosProvider>
   )
 }
 
