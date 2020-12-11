@@ -13,6 +13,7 @@ import { Chip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { invertColor } from '../../helpers/invertColor'
 import axios from '../../axios'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   chipsContainer: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ReviewChart = () => {
   const classes = useStyles()
+  const history = useHistory()
 
   const [tagsData, setTagsData] = useState({})
   const [reviewsData, setReviewsData] = useState([])
@@ -49,35 +51,14 @@ const ReviewChart = () => {
     fetchReviewsData()
   }, [tagsData])
 
-  const handleClick = () => {
-    console.log('handleClick')
+  const handleTagClick = (tagId) => {
+    history.push(`/tags/${tagId}`)
   }
 
   const handleDelete = () => {}
 
   return (
     <div>
-      <div className={classes.chipsContainer}>
-        {Object.keys(tagsData).map((tagDataId) => {
-          console.log(tagsData, tagDataId)
-
-          const tagData = tagsData[tagDataId]
-
-          return (
-            <Chip
-              size="small"
-              style={{
-                backgroundColor: tagData.color,
-                color: invertColor(tagData.color, true),
-              }}
-              label={tagData.label}
-              onClick={handleClick}
-              onDelete={handleDelete}
-            />
-          )
-        })}
-      </div>
-
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
           data={reviewsData}
@@ -92,7 +73,6 @@ const ReviewChart = () => {
           <XAxis dataKey="date" />
           <YAxis />
           <Tooltip />
-          <Legend />
           {Object.keys(tagsData).map((tagDataId) => {
             const tagData = tagsData[tagDataId]
 
@@ -109,6 +89,27 @@ const ReviewChart = () => {
           })}
         </BarChart>
       </ResponsiveContainer>
+
+      <div className={classes.chipsContainer}>
+        {Object.keys(tagsData).map((tagDataId) => {
+          console.log(tagsData, tagDataId)
+
+          const tagData = tagsData[tagDataId]
+
+          return (
+            <Chip
+              size="small"
+              style={{
+                backgroundColor: tagData.color,
+                color: invertColor(tagData.color, true),
+              }}
+              label={tagData.label}
+              onClick={() => handleTagClick(tagDataId)}
+              onDelete={handleDelete}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }

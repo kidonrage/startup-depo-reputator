@@ -8,6 +8,7 @@ import CardDetailSummaryCard from '../../components/TagDetailCard'
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    paddingTop: theme.spacing(3),
     flexGrow: 1,
   },
   paper: {
