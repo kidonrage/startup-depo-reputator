@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ReviewChart = () => {
+const ReviewChart = ({ fromDate, tillDate }) => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -44,12 +44,19 @@ const ReviewChart = () => {
 
   useEffect(() => {
     async function fetchReviewsData() {
-      const { data } = await axios.get('/reviewsData')
+      let tagsIds = Object.keys(tagsData)
+      const { data } = await axios.get('/reviewsData', {
+        params: {
+          tagsIds,
+          fromDate: fromDate,
+          tillDate: tillDate,
+        },
+      })
       setReviewsData(data)
     }
 
     fetchReviewsData()
-  }, [tagsData])
+  }, [tagsData, fromDate, tillDate])
 
   const handleTagClick = (tagId) => {
     history.push(`/tags/${tagId}`)
