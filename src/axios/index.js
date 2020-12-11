@@ -1,5 +1,6 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import { getTagsData } from './mock/tags'
 
 const axiosInstance = axios.create({
   baseURL: '/api/v1/',
@@ -8,23 +9,13 @@ const axiosInstance = axios.create({
 
 var mock = new MockAdapter(axiosInstance, { delayResponse: 2000 })
 
-mock.onGet('/tagsData').reply('200', {
-  stations: {
-    label: 'Вокзалы',
-    color: '#8884d8',
-  },
-  cars: {
-    label: 'Вагоны',
-    color: '#82ca9d',
-  },
-  restaraunts: {
-    label: 'Вагоны-рестораны',
-    color: '#ffc658',
-  },
-  conductors: {
-    label: 'Проводники',
-    color: '#ccbb40',
-  },
+// mock
+//   .onGet('/tagsData', { params: { tagsIds: ['stations'] } })
+//   .reply('200', getTagsData(['stations']))
+
+mock.onGet('/tagsData').reply((config) => {
+  let tagsIds = config.params ? config.params.tagsIds : null
+  return ['200', getTagsData(tagsIds)]
 })
 
 mock.onGet('/reviewsData').reply('200', [

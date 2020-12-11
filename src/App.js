@@ -68,16 +68,6 @@ function App() {
               <Typography variant="h6" noWrap className={classes.title}>
                 ДВЖД Репутатор
               </Typography>
-              <nav>
-                <ul>
-                  <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="/tags/12">Tag Details</Link>
-                  </li>
-                </ul>
-              </nav>
             </Toolbar>
           </AppBar>
 

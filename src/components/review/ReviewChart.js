@@ -55,7 +55,17 @@ const ReviewChart = () => {
     history.push(`/tags/${tagId}`)
   }
 
-  const handleDelete = () => {}
+  const handleDeleteTag = async (deletedTagId) => {
+    let tagsIds = Object.keys(tagsData)
+    let updatedTagsIds = tagsIds.filter((tagId) => tagId !== deletedTagId)
+
+    const { data } = await axios.get('/tagsData', {
+      params: {
+        tagsIds: updatedTagsIds,
+      },
+    })
+    setTagsData(data)
+  }
 
   return (
     <div>
@@ -105,7 +115,7 @@ const ReviewChart = () => {
               }}
               label={tagData.label}
               onClick={() => handleTagClick(tagDataId)}
-              onDelete={handleDelete}
+              onDelete={() => handleDeleteTag(tagDataId)}
             />
           )
         })}
