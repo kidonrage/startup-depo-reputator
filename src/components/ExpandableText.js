@@ -10,6 +10,8 @@ const useStyles = makeStyles((theme) => ({
 const ExpandableText = ({ text }) => {
   const classes = useStyles()
 
+  const compactTextLength = 250
+
   const [isExpanded, setIsExpanded] = useState(false)
 
   const toggleExpanded = (event) => {
@@ -21,9 +23,11 @@ const ExpandableText = ({ text }) => {
   return (
     <p>
       {isExpanded ? text : text.replace(/^(.{250}[^\s]*).*/, '$1')}{' '}
-      <a href="#" className={classes.expandButton} onClick={toggleExpanded}>
-        {isExpanded ? 'Свернуть' : 'Читать далее...'}
-      </a>
+      {text.length > compactTextLength && (
+        <a href="#" className={classes.expandButton} onClick={toggleExpanded}>
+          {isExpanded ? 'Свернуть' : 'Читать далее...'}
+        </a>
+      )}
     </p>
   )
 }

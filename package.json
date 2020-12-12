@@ -19,6 +19,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "recharts": "^1.8.5",
+    "socket.io-client": "^3.0.4",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -33,6 +34,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "http://localhost:5000",
   "browserslist": {
     "production": [
       ">0.2%",

@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import axios from '../../axios'
 import PageTitle from '../../components/PageTitle'
-import ReviewListTable from '../../components/tagDetails/ReviewsListTable'
+import ReviewsListTablePanel from '../../components/tagDetails/ReviewsListTablePanel'
 import CardDetailSummaryCard from '../../components/TagDetailCard'
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +84,7 @@ const TagDetails = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <ReviewListTable reviews={tagReviews} />
+            <ReviewsListTablePanel reviews={tagReviews} />
           </Grid>
         </Grid>
       </div>

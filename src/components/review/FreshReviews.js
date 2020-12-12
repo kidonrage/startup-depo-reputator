@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import {
   Paper,
   Table,
@@ -11,13 +12,12 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 
 import ExpandableText from '../ExpandableText'
+import { getMoodIcon } from '../../helpers/getMood'
 
 const useStyles = makeStyles((theme) => ({}))
 
-const FreshReviewsTable = () => {
+const FreshReviewsTable = ({ reviews, url }) => {
   const classes = useStyles()
-
-  const reviews = []
 
   return (
     <TableContainer>
@@ -31,18 +31,18 @@ const FreshReviewsTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {reviews.map((row) => (
-            <TableRow key={row.name}>
+          {reviews.map((review) => (
+            <TableRow key={review.time}>
               <TableCell>
-                <a href={row.sourceLink} target="_blank" rel="noreferrer">
-                  {row.sourceName}
+                <a href={url} target="_blank" rel="noreferrer">
+                  Google Maps
                 </a>
               </TableCell>
-              <TableCell>{row.date.toString()}</TableCell>
+              <TableCell>{moment.unix(review.time).format('L')}</TableCell>
               <TableCell>
-                <ExpandableText text={row.reviewText} />
+                <ExpandableText text={review.text} />
               </TableCell>
-              <TableCell>{row.rating}/5.0</TableCell>
+              <TableCell>{getMoodIcon(review.rating)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

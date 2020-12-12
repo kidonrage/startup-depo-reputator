@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Paper, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import socketIOClient from 'socket.io-client'
 import FreshReviews from './FreshReviews'
+
+const ENDPOINT = 'http://127.0.0.1:5000'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -20,6 +23,21 @@ const useStyles = makeStyles((theme) => ({
 const PositiveNegativeReviewsCountPanel = () => {
   const classes = useStyles()
 
+  const [reviewsSourceUrl, setReviewsSourceUrl] = useState(null)
+  const [reviews, setReviews] = useState([])
+
+  useEffect(() => {
+    const socket = socketIOClient(ENDPOINT)
+    socket.on('reviews', (data) => {
+      const { reviews, url } = data
+      setReviews(reviews)
+      setReviewsSourceUrl(url)
+
+      console.log(url)
+    })
+    return () => socket.disconnect()
+  }, [])
+
   return (
     <Paper className={classes.paper}>
       <Typography
@@ -30,7 +48,7 @@ const PositiveNegativeReviewsCountPanel = () => {
       >
         Новые отзывы
       </Typography>
-      <FreshReviews />
+      <FreshReviews reviews={reviews} url={reviewsSourceUrl} />
     </Paper>
   )
 }
