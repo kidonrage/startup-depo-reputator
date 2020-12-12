@@ -5,11 +5,12 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import { makeStyles } from '@material-ui/core/styles'
 import DateFnsUtils from '@date-io/date-fns'
 
+import {
+  loadDashboardConfig,
+  saveDashboardConfig,
+} from '../../services/dashboardConfigService'
 import PageTitle from '../../components/PageTitle'
 import SettingsDialog from '../../components/review/SettingsDialog'
-import ReviewsCountPanel from '../../components/review/ReviewsCountPanel'
-import PositiveNegativeReviewsCountPanel from '../../components/review/PositiveNegativeReviewsCountPanel'
-import FreshReviewsPanel from '../../components/review/FreshReviewsPanel'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,40 +36,20 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles()
 
-  const [panelsConfiguration, setPanelsConfiguration] = useState([])
+  const [panelsConfiguration, setPanelsConfiguration] = useState(
+    loadDashboardConfig()
+  )
   const [isSettingsOpened, setIsSettingsOpened] = useState(false)
 
   useEffect(() => {
-    let savedPanelsConfig = localStorage.getItem('panelsConfig')
-
-    if (!savedPanelsConfig) {
-      savedPanelsConfig = [
-        {
-          panelName: 'reviewsCount',
-          panelLabel: 'Количество отзывов',
-          panelComponent: <ReviewsCountPanel />,
-          showPanel: true,
-        },
-        {
-          panelName: 'positiveNegativeReviewsCount',
-          panelLabel: 'Количество позитивных/нейтральных отзывов',
-          panelComponent: <PositiveNegativeReviewsCountPanel />,
-          showPanel: true,
-        },
-        {
-          panelName: 'freshReviews',
-          panelLabel: 'Новые отзывы',
-          panelComponent: <FreshReviewsPanel />,
-          showPanel: true,
-        },
-      ]
+    if (panelsConfiguration.length === 0) {
+      return
     }
 
-    setPanelsConfiguration(savedPanelsConfig)
-  }, [])
+    saveDashboardConfig(panelsConfiguration)
+  }, [panelsConfiguration])
 
   const handlePanelsConfigSave = (updatedConfig) => {
-    console.log('handlePanelsConfigSave')
     setPanelsConfiguration(updatedConfig)
   }
 
