@@ -28,8 +28,6 @@ const TagDetails = () => {
 
   const { tagId } = useParams()
 
-  const tagName = 'Вокзалы'
-
   const [tagStatistics, setTagStatistics] = useState({})
   const [tagReviews, setTagReviews] = useState([])
 

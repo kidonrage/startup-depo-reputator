@@ -81,3 +81,32 @@ export const getReviewsData = (tagsIds, fromDate, tillDate) => {
 
   return result
 }
+
+export const getPositiveNegativeReviewsData = (tagsIds, fromDate, tillDate) => {
+  return [
+    {
+      tagId: 'stations',
+      tagLabel: 'Станции',
+      positiveReviewsCount: 50,
+      negativeReviewsCount: 37,
+    },
+    {
+      tagId: 'cars',
+      tagLabel: 'Вагоны',
+      positiveReviewsCount: 50,
+      negativeReviewsCount: 37,
+    },
+    {
+      tagId: 'restaraunts',
+      tagLabel: 'Вагоны-рестораны',
+      positiveReviewsCount: 50,
+      negativeReviewsCount: 62,
+    },
+    {
+      tagId: 'conductors',
+      tagLabel: 'Проводники',
+      positiveReviewsCount: 50,
+      negativeReviewsCount: 37,
+    },
+  ]
+}

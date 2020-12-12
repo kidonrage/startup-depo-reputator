@@ -20,6 +20,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
+import ExpandableText from '../ExpandableText'
 
 const useStyles = makeStyles({
   table: {
@@ -50,7 +51,9 @@ const ReviewsListTable = ({ reviews }) => {
                 </a>
               </TableCell>
               <TableCell>{row.date.toString()}</TableCell>
-              <TableCell>{row.reviewText}</TableCell>
+              <TableCell>
+                <ExpandableText text={row.reviewText} />
+              </TableCell>
               <TableCell>{row.rating}/5.0</TableCell>
             </TableRow>
           ))}

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { getTagsData, getTagStatistics, getTagReviews } from './mock/tags'
-import { getReviewsData } from './mock/reviews'
+import { getReviewsData, getPositiveNegativeReviewsData } from './mock/reviews'
 
 const axiosInstance = axios.create({
   baseURL: '/api/v1/',
@@ -18,6 +18,11 @@ mock.onGet('/tagsData').reply((config) => {
 mock.onGet('/reviewsData').reply((config) => {
   const { tagsIds, fromDate, tillDate } = config.params
   return ['200', getReviewsData(tagsIds, fromDate, tillDate)]
+})
+
+mock.onGet('/positiveNegativeReviewsData').reply((config) => {
+  const { tagsIds, fromDate, tillDate } = config.params
+  return ['200', getPositiveNegativeReviewsData(tagsIds, fromDate, tillDate)]
 })
 
 const tagStatisticRegExp = /^\/tags\/(.+)\/statistics/
