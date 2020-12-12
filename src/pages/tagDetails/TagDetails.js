@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Grid, Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
+import axios from '../../axios'
 import PageTitle from '../../components/PageTitle'
-import ReviewListTable from '../../components/ReviewsListTable'
+import ReviewListTable from '../../components/tagDetails/ReviewsListTable'
 import CardDetailSummaryCard from '../../components/TagDetailCard'
 
 const useStyles = makeStyles((theme) => ({
@@ -16,46 +18,75 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  tagLabel: {
+    fontWeight: 700,
+  },
 }))
 
 const TagDetails = () => {
   const classes = useStyles()
 
+  const { tagId } = useParams()
+
   const tagName = 'Вокзалы'
+
+  const [tagStatistics, setTagStatistics] = useState({})
+  const [tagReviews, setTagReviews] = useState([])
+
+  useEffect(() => {
+    async function getStatistics() {
+      const { data } = await axios.get(`/tags/${tagId}/statistics`)
+      setTagStatistics(data)
+    }
+
+    getStatistics()
+  }, [tagId])
+
+  useEffect(() => {
+    async function getReviews() {
+      const { data } = await axios.get(`/tags/${tagId}/reviews`)
+      setTagReviews(data)
+    }
+
+    getReviews()
+  }, [tagId])
 
   return (
     <Container fixed>
       <div className={classes.root}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <PageTitle>Статистика по Тегу: {tagName}</PageTitle>
+            <PageTitle>
+              Статистика по Тегу:{' '}
+              <span className={classes.tagLabel}>{tagStatistics.label}</span>
+            </PageTitle>
           </Grid>
           <Grid item xs>
             <CardDetailSummaryCard
               cardLabel="Средний рейтинг"
-              cardTextValue="4.0/5.0"
+              cardTextValue={`${tagStatistics.averageRating || '0.0'} / 5.0`}
             />
           </Grid>
           <Grid item xs>
             <CardDetailSummaryCard
               cardLabel="Всего отзывов"
-              cardTextValue="210"
+              cardTextValue={tagStatistics.reviewsCount || 0}
             />
           </Grid>
           <Grid item xs>
             <CardDetailSummaryCard
               cardLabel="Новых отзывов"
-              cardTextValue="3"
+              cardTextValue={tagStatistics.newReviewsCount || 0}
             />
           </Grid>
           <Grid item xs>
             <CardDetailSummaryCard
               cardLabel="Изменение рейтинга"
-              cardTextValue="0.1%"
+              cardTextValue={`${tagStatistics.ratingChange || 0}%`}
             />
           </Grid>
           <Grid item xs={12}>
-            <ReviewListTable />
+            <ReviewListTable reviews={tagReviews} />
           </Grid>
         </Grid>
       </div>

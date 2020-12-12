@@ -1,18 +1,21 @@
 import React from 'react'
-import { AxiosProvider } from 'react-axios'
-import axios from 'axios'
 import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
 } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
 import { red, grey } from '@material-ui/core/colors'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+} from 'react-router-dom'
 
+import TopBar from './components/TopBar'
 import Home from './pages/home/Home'
 import TagDetails from './pages/tagDetails/TagDetails'
 
@@ -58,30 +61,22 @@ function App() {
   const classes = useStyles()
 
   return (
-    // <AxiosProvider instance={axiosInstance}>
     <Router>
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed">
-            <Toolbar>
-              <Typography variant="h6" noWrap className={classes.title}>
-                ДВЖД Репутатор
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <TopBar />
 
           <main className={classes.content}>
             <div className={classes.drawerHeader} />
             <Switch>
               <Route path="/" exact component={Home} />
-              <Route path="/tags/:id" component={TagDetails} />
+              <Route path="/tags/:tagId" component={TagDetails} />
             </Switch>
           </main>
         </div>
       </ThemeProvider>
     </Router>
-    // </AxiosProvider>
   )
 }
 

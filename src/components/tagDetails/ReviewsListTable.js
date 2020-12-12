@@ -21,22 +21,13 @@ import Switch from '@material-ui/core/Switch'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 
-function createData(sourceName, sourceLink, date, reviewText, rating) {
-  return { sourceName, sourceLink, date, reviewText, rating }
-}
-
-const rows = [
-  createData('2ГИС', 'https://2gis.ru', new Date(), 'Текст отзыва', 4.3),
-  createData('ВК', 'https://vk.com', new Date(), 'Текст отзыва 2', 5.0),
-]
-
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 })
 
-export default function DenseTable() {
+const ReviewsListTable = ({ reviews }) => {
   const classes = useStyles()
 
   return (
@@ -51,7 +42,7 @@ export default function DenseTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {reviews.map((row) => (
             <TableRow key={row.name}>
               <TableCell>
                 <a href={row.sourceLink} target="_blank" rel="noreferrer">
@@ -68,3 +59,5 @@ export default function DenseTable() {
     </TableContainer>
   )
 }
+
+export default ReviewsListTable
