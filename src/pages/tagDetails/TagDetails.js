@@ -69,7 +69,11 @@ const TagDetails = () => {
           <Grid item xs>
             <CardDetailSummaryCard
               cardLabel="Средний рейтинг"
-              cardTextValue={`${tagStatistics.averageRating || '0.0'} / 5.0`}
+              cardTextValue={`${
+                tagStatistics.averageRating
+                  ? tagStatistics.averageRating.toFixed(1)
+                  : '0.0'
+              } / 5.0`}
             />
           </Grid>
           <Grid item xs>

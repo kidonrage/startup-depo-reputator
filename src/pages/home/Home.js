@@ -4,6 +4,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { makeStyles } from '@material-ui/core/styles'
 import DateFnsUtils from '@date-io/date-fns'
+import { ru } from 'date-fns/locale'
 
 import {
   loadDashboardConfig,
@@ -59,7 +60,7 @@ const Home = () => {
 
   return (
     <>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ru}>
         <Container fixed>
           <div className={classes.root}>
             <Grid container spacing={3}>
