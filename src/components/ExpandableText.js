@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 const ExpandableText = ({ text }) => {
   const classes = useStyles()
 
-  const compactTextLength = 250
+  const compactTextLength = 100
 
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -20,9 +20,19 @@ const ExpandableText = ({ text }) => {
     setIsExpanded(!isExpanded)
   }
 
+  const trimByWord = (sentence) => {
+    var result = sentence
+    var resultArray = result.split(' ')
+    if (resultArray.length > compactTextLength) {
+      resultArray = resultArray.slice(0, compactTextLength)
+      result = resultArray.join(' ') + '...'
+    }
+    return result
+  }
+
   return (
     <p>
-      {isExpanded ? text : text.replace(/^(.{250}[^\s]*).*/, '$1')}{' '}
+      {isExpanded ? text : trimByWord(text)}{' '}
       {text.length > compactTextLength && (
         <a href="#" className={classes.expandButton} onClick={toggleExpanded}>
           {isExpanded ? 'Свернуть' : 'Читать далее...'}

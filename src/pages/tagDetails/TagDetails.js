@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import moment from 'moment'
 import { Grid, Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -43,7 +44,13 @@ const TagDetails = () => {
   useEffect(() => {
     async function getReviews() {
       const { data } = await axios.get(`/tags/${tagId}/reviews`)
-      setTagReviews(data)
+
+      const tagReviews = data.map((review) => ({
+        ...review,
+        moment: moment.unix(review.time),
+      }))
+
+      setTagReviews(tagReviews)
     }
 
     getReviews()

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import moment from 'moment'
 import { Paper, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import socketIOClient from 'socket.io-client'
-import FreshReviews from './FreshReviews'
+import ReviewsListTable from '../ReviewsListTable'
+import { getSenceFromRating } from '../../helpers/mood'
 
 const ENDPOINT = 'http://127.0.0.1:5000'
 
@@ -23,17 +25,22 @@ const useStyles = makeStyles((theme) => ({
 const PositiveNegativeReviewsCountPanel = () => {
   const classes = useStyles()
 
-  const [reviewsSourceUrl, setReviewsSourceUrl] = useState(null)
   const [reviews, setReviews] = useState([])
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT)
     socket.on('reviews', (data) => {
       const { reviews, url } = data
-      setReviews(reviews)
-      setReviewsSourceUrl(url)
 
-      console.log(url)
+      const reviewsWithUrl = reviews.map((review) => ({
+        ...review,
+        moment: moment.unix(review.time),
+        sourceName: 'Google Maps',
+        sourceLink: url,
+        sence: getSenceFromRating(review.rating),
+      }))
+
+      setReviews(reviewsWithUrl)
     })
     return () => socket.disconnect()
   }, [])
@@ -48,7 +55,7 @@ const PositiveNegativeReviewsCountPanel = () => {
       >
         Новые отзывы
       </Typography>
-      <FreshReviews reviews={reviews} url={reviewsSourceUrl} />
+      <ReviewsListTable reviews={reviews} />
     </Paper>
   )
 }

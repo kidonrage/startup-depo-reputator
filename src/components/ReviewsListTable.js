@@ -19,7 +19,7 @@ import Switch from '@material-ui/core/Switch'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import ExpandableText from './ExpandableText'
-import { getMoodIcon } from '../helpers/getMood'
+import { getMoodIcon } from '../helpers/mood'
 import { stableSort, getComparator } from '../helpers/arraySorting'
 
 const useStyles = makeStyles({
@@ -28,6 +28,7 @@ const useStyles = makeStyles({
   },
   moodIconContainer: {
     textAlign: 'center',
+    paddingRight: 22,
   },
 })
 
@@ -52,13 +53,21 @@ const ReviewsListTable = ({ reviews }) => {
       <TableHead>
         <TableRow>
           <TableCell>Источник</TableCell>
-          <TableCell>Дата</TableCell>
-          <TableCell>Текст отзыва</TableCell>
-          <TableCell>
+          <TableCell width={120}>
             <TableSortLabel
-              active={orderBy === 'rating'}
-              direction={orderBy === 'rating' ? order : 'asc'}
-              onClick={createSortHandler('rating')}
+              active={orderBy === 'time'}
+              direction={orderBy === 'time' ? order : 'asc'}
+              onClick={createSortHandler('time')}
+            >
+              Дата
+            </TableSortLabel>
+          </TableCell>
+          <TableCell>Текст отзыва</TableCell>
+          <TableCell width={120}>
+            <TableSortLabel
+              active={orderBy === 'sence'}
+              direction={orderBy === 'sence' ? order : 'asc'}
+              onClick={createSortHandler('sence')}
             >
               Настроение
             </TableSortLabel>
@@ -73,12 +82,18 @@ const ReviewsListTable = ({ reviews }) => {
                 {row.sourceName}
               </a>
             </TableCell>
-            <TableCell>{row.date.toString()}</TableCell>
             <TableCell>
-              <ExpandableText text={row.reviewText} />
+              {row.moment
+                ? row.moment.format('DD.MM.YYYY')
+                : 'Не удалось получить дату'}
             </TableCell>
-            <TableCell className={classes.moodIconContainer}>
-              {getMoodIcon(row.rating)}
+            <TableCell>
+              <ExpandableText text={row.text} />
+            </TableCell>
+            <TableCell>
+              <div className={classes.moodIconContainer}>
+                {getMoodIcon(row.sence)}
+              </div>
             </TableCell>
           </TableRow>
         ))}
